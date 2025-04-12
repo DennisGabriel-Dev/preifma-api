@@ -16,3 +16,16 @@ depois de configurar tudo isso, basta rodar:<br>
 npm install
 node --watch server.js
 ```
+<hr>
+Para efetuar testes, é importante criar o arquivo 
+
+```
+.env.test
+```
+
+<br>
+O conteúdo dele é o mesmo do ```.env``` citado acima, para uma melhor experiência opte por usar bancos separados.
+Assim que tudo estiver devidamente configurado para rodar os testes, execute:
+```
+npm test
+```
