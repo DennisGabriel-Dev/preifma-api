@@ -5,8 +5,8 @@ import User from '../models/User.js';
 export async function createQuestion(req, res) {
   const { text, answers } = req.body;
   const user = await User.findByPk(req.user.id)
-  console.log(user)
-  if(!user.isAdmin){
+
+  if(!user?.isAdmin){
     return res.status(401).json({ message: "Usuário não autorizado" });
   }
 
