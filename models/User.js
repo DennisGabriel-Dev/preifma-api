@@ -8,6 +8,10 @@ const User = sequelize.define('User', {
     unique: true,
   },
   password: DataTypes.STRING,
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  }
 });
 
 export default User;

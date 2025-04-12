@@ -12,5 +12,5 @@ const sequelize = new Sequelize(
     dialect: 'postgres'
   }
 );
-sequelize.sync();
+sequelize.sync({ alter: true });
 export default sequelize;
