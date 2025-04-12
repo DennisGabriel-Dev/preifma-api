@@ -1,11 +1,17 @@
 import express from 'express';
+import dotenv from 'dotenv';
+import sequelize from './config/database.js';
+import userRoutes from './routes/userRoutes.js';
+
+dotenv.config();
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.use(express.json());
+app.use('/api/users', userRoutes);
+
+sequelize.sync().then(() => {
+  console.log('DB conectado');
 });
 
-app.listen(3001, () => {
-  console.log('Example app listening on port 3001!');
-})
+export default app;
