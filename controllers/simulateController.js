@@ -1,5 +1,6 @@
 import UserAnswer from '../models/UserAnswer.js';
 import Answer from '../models/Answer.js';
+import Question from '../models/Question.js';
 
 export async function submitAnswer(req, res) {
   const userId = req.user.id;
@@ -33,6 +34,52 @@ export async function submitAnswer(req, res) {
       message: 'Resposta registrada com sucesso',
       correct: isCorrect
     });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+}
+
+
+export async function getResults(req, res) {
+  const userId = req.user.id;
+
+  try {
+    const userAnswers = await UserAnswer.findAll({ where: { user_id: userId } });
+    const correctAnswers = userAnswers.filter(answer => answer.answer.is_correct);
+    const totalQuestions = userAnswers.length;
+    const score = (correctAnswers.length / totalQuestions) * 100;
+
+    res.status(200).json({
+      totalQuestions,
+      correctAnswers: correctAnswers.length,
+      score
+    });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+}
+
+
+export async function getQuestionById(req, res) {
+  const questionId = req.params.id;
+  try {
+    const question = await Question.findByPk(questionId, {
+      include: [Answer]
+    });
+    ( question != null ?
+      res.status(200).json(question) :
+      res.status(400).json({ message: "Questão não encontrada!" })
+    );
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+}
+
+
+export async function getQuestions(req, res) {
+  try {
+    const questions = await Question.findAll();
+    res.status(200).json(questions);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
